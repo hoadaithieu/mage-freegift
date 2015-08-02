@@ -1,0 +1,117 @@
+<script type="text/javascript">
+//<![CDATA[
+
+function restoreLayout() {
+	jQuery('#rule_promo_items').parent().parent().hide();
+	jQuery('#rule_promo_qty').parent().parent().hide();
+	jQuery('#rule_discount_amount').parent().parent().show();
+	jQuery('#rule_discount_qty').parent().parent().show();
+	jQuery('#rule_discount_step').parent().parent().show();
+	jQuery('#rule_apply_to_shipping').parent().parent().show();
+	jQuery('#rule_simple_free_shipping').parent().parent().show();
+	jQuery('#rule_stop_rules_processing').parent().parent().show();
+
+}
+function updateLayout() {
+	jQuery('#rule_promo_items').parent().parent().show();
+	jQuery('#rule_promo_qty').parent().parent().show();
+	jQuery('#rule_discount_amount').parent().parent().hide();
+	jQuery('#rule_discount_qty').parent().parent().hide();
+	jQuery('#rule_discount_step').parent().parent().hide();
+	jQuery('#rule_apply_to_shipping').parent().parent().hide();
+	jQuery('#rule_simple_free_shipping').parent().parent().hide();
+	jQuery('#rule_stop_rules_processing').parent().parent().hide();
+	
+	jQuery('#rule_discount_amount').val(0);
+	jQuery('#rule_discount_qty').val(0);
+	jQuery('#rule_discount_step').val(0);
+	jQuery('#rule_apply_to_shipping').val(0);
+	jQuery('#rule_simple_free_shipping').val(0);
+	jQuery('#rule_stop_rules_processing').val(0);
+	
+}
+
+jQuery(function() {
+	var ac = ["product_auto_add", "cart_auto_add", "product_same_auto_add"];
+	if (ac.indexOf(jQuery('#rule_simple_action').val()) >= 0 ) {
+		updateLayout();
+	} else {
+		restoreLayout();
+	}
+	
+	var tool = '<span class="vc_freegift-tool"><img class="vc_freegift-trigger" src="<?php echo $this->getSkinUrl('images/rule_chooser_trigger.gif');?>"/><img class="vc_freegift-apply" src="<?php echo $this->getSkinUrl('images/rule_component_apply.gif');?>"/><img class="vc_freegift-remove" src="<?php echo $this->getSkinUrl('images/rule_component_remove.gif');?>"/></span><div class="vc_freegift-grip"></div>';
+	jQuery('#rule_promo_items').parent().css('width','100%').append(tool);
+	
+	
+	
+	jQuery('.vc_freegift-trigger').click(function() {
+		jQuery('#loading-mask').show();
+		jQuery.ajax({
+			type: 'POST',
+			dataType: 'html',
+			url: '<?php echo $this->getUrl('vc_freegift/adminhtml_promo_widget/chooser/');?>?isAjax=true',
+			//data: {id: id, field : field, value: value, form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey();?>'}
+			data: { form: 'rule_actions_fieldset', form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey();?>'}
+		}).done(function(result) {
+			jQuery('.vc_freegift-grip').html('').append(result);
+			jQuery('#loading-mask').hide();
+			
+			jQuery('.vc_freegift-grip').find('input[type="checkbox"]').click(function() {
+				var skus = jQuery('#rule_promo_items').val().replace(/\s/g, "");
+				if (jQuery(this).prop('checked')) {
+					
+					if (skus.length > 0) {
+						if (skus.indexOf(jQuery(this).val()) < 0) {
+							jQuery('#rule_promo_items').val(skus + ',' + jQuery(this).val());
+						}
+					} else {
+						jQuery('#rule_promo_items').val(jQuery(this).val());
+					}
+				} else {
+					skuAr = skus.split(',');
+					if (skuAr.indexOf(jQuery(this).val()) >= 0) {
+						skuAr.splice(skuAr.indexOf(jQuery(this).val()),1);
+						jQuery('#rule_promo_items').val(skuAr.join(','));
+					}
+				}
+			});
+			
+		}).error(function(result) {
+			jQuery('#loading-mask').hide();
+		});
+	
+	});
+	
+	jQuery('.vc_freegift-apply').click(function() {
+		jQuery('.vc_freegift-grip').html('');
+	});
+	
+	jQuery('.vc_freegift-remove').click(function() {
+		jQuery('#rule_promo_items').val('');
+	});	
+	
+});
+
+
+
+
+jQuery('#rule_simple_action').change(function() {
+	switch (this.value) {
+		case 'product_auto_add':
+			updateLayout();
+		break;
+		case 'cart_auto_add':
+			updateLayout();		
+		break
+		case 'product_same_auto_add':
+			updateLayout();	
+			jQuery('#rule_promo_items').parent().parent().hide();	
+			jQuery('#rule_promo_qty').parent().parent().hide();
+		break;
+		default:
+			restoreLayout();
+		break;
+	}
+});
+//]]>
+</script>

@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <VC_FreeGift>
+            <version>1.0.0</version>
+        </VC_FreeGift>
+    </modules>
+    <frontend>
+        <routers>
+            <vc_freegift>
+                <use>standard</use>
+                <args>
+                    <module>VC_FreeGift</module>
+                    <frontName>freegift</frontName>
+                </args>
+            </vc_freegift>
+        </routers>
+        <layout>
+            <updates>
+                <vc_freegift>
+                    <file>vc_freegift.xml</file>
+                </vc_freegift>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+			<vc_freegift>
+				<use>admin</use>
+				<args>
+					<module>VC_FreeGift</module>
+					<frontName>vc_freegift</frontName>
+				</args>
+			</vc_freegift>
+        </routers>
+    </admin>
+    <adminhtml>
+		
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<catalog>
+							<children>
+					
+								
+							</children>
+						</catalog>
+						<system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <vc_freegift>
+                                            <title>VC Auto Add Promo Items Section</title>
+                                        </vc_freegift>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+												
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<vc_freegift>
+					<file>vc_freegift.xml</file>
+				</vc_freegift>
+			</updates>
+		</layout>
+    </adminhtml>   
+    <global>
+        <models>
+            <vc_freegift>
+                <class>VC_FreeGift_Model</class>
+                <resourceModel>vc_freegift_resource</resourceModel>
+            </vc_freegift>
+			<vc_freegift_resource>
+                <class>VC_FreeGift_Model_Resource</class>
+                <deprecatedNode>vc_freegift_resource_eav_mysql4</deprecatedNode>
+                <entities>
+                    <salesrule_actions>
+                        <table>vc_freegift_salesrule_actions</table>
+                    </salesrule_actions>
+				</entities>
+			</vc_freegift_resource>	
+			
+			<sales>
+				<rewrite>
+					<quote_address_total_subtotal>VC_FreeGift_Model_Sales_Quote_Address_Total_Subtotal</quote_address_total_subtotal>
+				</rewrite>
+			</sales>		
+        </models>	
+		
+		<resources>
+			<vc_freegift_setup>
+				<setup>
+					<module>VC_FreeGift</module>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</vc_freegift_setup>
+			<vc_freegift_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</vc_freegift_write>
+			<vc_freegift_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</vc_freegift_read>
+		</resources>
+				
+        <blocks>
+            <vc_freegift>
+                <class>VC_FreeGift_Block</class>
+            </vc_freegift>
+			
+			<!--adminhtml>
+				<rewrite>
+					<promo_quote_edit_tab_actions>VC_FreeGift_Block_Adminhtml_Promo_Quote_Edit_Tab_Actions</promo_quote_edit_tab_actions>
+				</rewrite>
+			</adminhtml-->			
+        </blocks>
+	
+        <helpers>
+            <vc_freegift>
+                <class>VC_FreeGift_Helper</class>
+            </vc_freegift>
+        </helpers>
+		
+		<events>
+			<salesrule_rule_load_after>
+				<observers>
+					<vc_freegift_salesrule_rule_load_after>
+						<class>vc_freegift/observer</class>
+						<method>loadAfter</method>
+					</vc_freegift_salesrule_rule_load_after>
+				</observers>
+			</salesrule_rule_load_after>	
+		
+			<salesrule_rule_save_after>
+				<observers>
+					<vc_freegift_salesrule_rule_save_actions>
+						<class>vc_freegift/observer</class>
+						<method>saveActions</method>
+					</vc_freegift_salesrule_rule_save_actions>
+				</observers>
+			</salesrule_rule_save_after>
+			
+			<salesrule_rule_delete_after>
+				<observers>
+					<vc_freegift_salesrule_rule_save_actions>
+						<class>vc_freegift/observer</class>
+						<method>deleteActions</method>
+					</vc_freegift_salesrule_rule_save_actions>
+				</observers>
+			</salesrule_rule_delete_after>
+			
+			
+			<salesrule_validator_process>
+				<observers>
+					<vc_freegift_salesrule_validator_process>
+						<class>vc_freegift/observer</class>
+						<method>validatorProcess</method>
+					</vc_freegift_salesrule_validator_process>
+				</observers>
+			</salesrule_validator_process>	
+			
+			<sales_quote_remove_item>
+				<observers>
+					<vc_freegift_sales_quote_remove_item>
+						<class>vc_freegift/observer</class>
+						<method>removeItem</method>
+					</vc_freegift_sales_quote_remove_item>
+				</observers>
+			</sales_quote_remove_item>
+		</events>
+		
+		<!--sales>
+			<quote>
+                <totals>	
+                    <vc_freegift_discount>
+                        <class>vc_freegift/quote_discount</class>
+                        <after>subtotal,shipping</after>
+                        <before>grand_total</before>
+                    </vc_freegift_discount>
+				</totals>
+			</quote>	
+		</sales-->
+    </global>
+	
+	<default>
+		<vc_freegift>
+			<general>
+				<enable>1</enable>
+				<label>FREE GIFT ! </label>
+			</general>
+		</vc_freegift>
+	</default>
+	
+</config>

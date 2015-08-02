@@ -1,0 +1,20 @@
+.vc_freegift-none{
+	display:none;
+}
+
+.vc_freegift-tool{
+}
+
+.vc_freegift-tool img{
+	margin-left:5px;
+	vertical-align:middle;
+	cursor:pointer;
+}
+
+.vc_freegift-grip{
+	display:block;
+}
+
+.vc_freegift-grip select{
+	width:auto !important;
+}

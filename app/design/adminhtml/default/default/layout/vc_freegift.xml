@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<layout>
+	<adminhtml_promo_quote_edit>
+		<reference name="head">
+			<action method="addItem" ifconfig="vc_freegift/general/enable"><type>skin_css</type><name>vc_freegift/css/styles.css</name><params/></action>
+			<action method="addItem" ifconfig="vc_freegift/general/enable"><type>skin_js</type><name>vc_freegift/js/jquery/jquery-1.10.2.js</name><params/></action>
+			<action method="addItem" ifconfig="vc_freegift/general/enable"><type>skin_js</type><name>vc_freegift/js/jquery/noconflict.js</name><params/></action>
+			<action method="addItem" ifconfig="vc_freegift/general/enable"><type>skin_js</type><name>vc_freegift/js/scripts.js</name><params/></action>
+		
+		</reference>
+		<reference name="content">
+			<block type="adminhtml/template" name="vc_freegift_promo_quote_edit_jsinit">
+				<action method="setTemplate" ifconfig="vc_freegift/general/enable"><template>vc_freegift/promo/salesrule/js.phtml</template></action>
+			</block>
+		</reference>
+		<reference name="promo_quote_edit_tabs">
+			<block type="vc_freegift/adminhtml_promo_quote_edit_tab_actions" name="promo_quote_edit_tab_actions"/>
+			<action method="addTab" ifconfig="vc_freegift/general/enable"><name>actions_section</name><block>promo_quote_edit_tab_actions</block></action>
+		</reference>
+	</adminhtml_promo_quote_edit>
+	
+	<adminhtml_sales_order_view>
+		<reference name="order_items">
+			<!--version 9.-->
+			<action method="addItemRender" ifconfig="vc_freegift/general/enable"><type>default</type><block>adminhtml/sales_order_view_items_renderer_default</block><template>vc_freegift/sales/order/view/items/renderer/default.phtml</template></action>
+			<!--version 8.-->		
+			<!--action method="addItemRender" ifconfig="vc_freegift/general/enable"><type>default</type><block>adminhtml/sales_order_view_items_renderer_default</block><template>vc_freegift/sales/order/view/items/renderer/default-v8.phtml</template></action-->
+		</reference>
+	</adminhtml_sales_order_view>
+	
+</layout>
